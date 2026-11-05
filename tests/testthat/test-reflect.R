@@ -70,3 +70,22 @@ test_that("Reflected HAL is not supported with a formula", {
     "not supported"
   )
 })
+
+test_that("Squashed reflected HAL fits predict like the full fit", {
+  hal_fit <- fit_hal(
+    X = x, Y = y, max_degree = 2, num_knots = c(15, 8), lambda = 0.02,
+    fit_control = list(cv_select = FALSE), reflect = TRUE
+  )
+  x_new <- matrix(runif(20 * p_dim, -1, 1), 20, p_dim)
+  expect_equal(
+    predict(squash_hal_fit(hal_fit), new_data = x_new),
+    predict(hal_fit, new_data = x_new)
+  )
+})
+
+test_that("The reflect argument must be TRUE or FALSE", {
+  for (bad in list(1, NA, "yes", c(TRUE, FALSE), NULL)) {
+    expect_error(fit_hal(X = x, Y = y, reflect = bad), "must be TRUE or FALSE")
+    expect_error(enumerate_basis(x, reflect = bad), "must be TRUE or FALSE")
+  }
+})

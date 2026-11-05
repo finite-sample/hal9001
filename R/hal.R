@@ -296,6 +296,10 @@ fit_hal <- function(X,
 
 
 
+  assertthat::assert_that(
+    isTRUE(reflect) || isFALSE(reflect),
+    msg = "`reflect` must be TRUE or FALSE"
+  )
   if (reflect && !is.null(formula)) {
     stop("`reflect = TRUE` is not supported with `formula`.")
   }

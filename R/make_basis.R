@@ -210,6 +210,10 @@ enumerate_basis <- function(x,
   if (!is.matrix(x)) {
     x <- as.matrix(x)
   }
+  assertthat::assert_that(
+    isTRUE(reflect) || isFALSE(reflect),
+    msg = "`reflect` must be TRUE or FALSE"
+  )
   # if degree is not specified, set it as the full dimensionality of input x
   if (is.null(max_degree)) {
     max_degree <- ncol(x)
